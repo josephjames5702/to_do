@@ -5,12 +5,17 @@ const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
+const path = require('path');
 const { randomUUID } = require('crypto');
 const User = require('./models/User');
 const Task = require('./models/Task');
 
 const app = express();
-const port = Number(process.env.API_PORT) || 5000;
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
+const port = Number(process.env.API_PORT || process.env.PORT || 5000);
 const mongoUri = process.env.MONGO_URI;
 const sessionSecret = process.env.SESSION_SECRET;
 const demoMode = process.env.DEMO_MODE === 'true';
@@ -371,6 +376,23 @@ app.delete(
   })
 );
 
+if (process.env.NODE_ENV === 'production') {
+  const buildDirectory = path.join(__dirname, '..', 'build');
+  app.use(express.static(buildDirectory));
+  app.get('*', (request, response, next) => {
+    if (request.path.startsWith('/api/')) {
+      next();
+      return;
+    }
+
+    response.sendFile(path.join(buildDirectory, 'index.html'), (error) => {
+      if (error) {
+        next(error);
+      }
+    });
+  });
+}
+
 app.use((error, request, response, next) => {
   console.error(error);
   if (response.headersSent) {
@@ -404,7 +426,10 @@ async function startServer() {
     console.log('Demo account ready: todo.demo@example.com');
   }
 
-  const host = demoMode ? '127.0.0.1' : '0.0.0.0';
+  const host =
+    demoMode && process.env.NODE_ENV !== 'production'
+      ? '127.0.0.1'
+      : '0.0.0.0';
   app.listen(port, host, () => {
     console.log(`API server listening on http://localhost:${port}`);
   });

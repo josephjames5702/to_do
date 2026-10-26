@@ -82,3 +82,16 @@ The React development server runs on port 3000, and the Express API runs on
 port 5000. The React development server proxies `/api` requests to Express.
 If you change `API_PORT`, also update the `proxy` value in `package.json`.
 
+## Deploy a public demo
+
+Deploy the app as one web service on Render. The service serves the React build
+and API together, uses in-memory demo data, and generates a session secret
+during setup.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/josephjames5702/to_do)
+
+After deployment finishes, open the `onrender.com` URL Render assigns to the
+service. Sign in with the demo account above. Demo users, tasks, and sessions
+are shared by anyone using that deployment and are not persistent; restarting
+or redeploying the service clears them. Do not enter personal information.
+
