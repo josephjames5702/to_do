@@ -1,9 +1,3 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
 # ToDo List
 
 This app uses React for the UI and an Express/Node.js API. It can use MongoDB
