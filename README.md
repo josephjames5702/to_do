@@ -4,67 +4,87 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+# ToDo List
 
-### `npm start`
+This app uses React for the UI and an Express/Node.js API. It can use MongoDB
+for persistent accounts, sessions, and tasks, or an in-memory demo mode to
+show the app without installing MongoDB. Passwords are hashed, and sign-in
+uses an HTTP-only session cookie.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Architecture
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```mermaid
+flowchart LR
+	Person[User] --> UI[React app<br/>localhost:3000]
+	UI -->|/api requests| API[Express API<br/>localhost:5000]
+	API --> Auth[Session authentication]
+	Auth --> Store{Storage mode}
+	Store -->|DEMO_MODE=true| Memory[In-memory demo data]
+	Store -->|DEMO_MODE=false| MongoDB[(MongoDB)]
+```
 
-### `npm test`
+## Data Model
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```mermaid
+erDiagram
+	USER ||--o{ TASK : owns
+	USER {
+		ObjectId id
+		string email UK
+		string passwordHash
+	}
+	TASK {
+		ObjectId id
+		ObjectId user FK
+		string text
+		boolean completed
+		datetime createdAt
+		datetime updatedAt
+	}
+```
 
-### `npm run build`
+## Run a demo without MongoDB
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+From this project folder, install dependencies and create `.env` if needed:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```powershell
+npm install
+Copy-Item .env.example .env
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Set `DEMO_MODE=true` in `.env` and set `SESSION_SECRET` to a private value of
+at least 32 characters, then start the app:
 
-### `npm run eject`
+```powershell
+npm run dev
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Open [http://localhost:3000](http://localhost:3000) and log in using:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Email: `todo.demo@example.com`
+- Password: `TodoDemo123!`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+You can also create an account using **Sign up**. Demo accounts, sessions, and
+tasks are held in memory and are cleared when the API server restarts. Use
+MongoDB mode below when data needs to persist.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Run with MongoDB
 
-## Learn More
+1. Install Node.js and MongoDB, or create a MongoDB Atlas database.
+2. Set `DEMO_MODE=false` in `.env`, set `MONGO_URI` to your MongoDB connection
+   string, and make sure MongoDB is running.
+3. Keep `PORT=3000` for React and `API_PORT=5000` for Express. Keep `.env`
+   private; it is ignored by Git.
+4. Start the Node API and React app together:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```powershell
+   npm run dev
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. Open [http://localhost:3000](http://localhost:3000). Create an account, then
+   add tasks. Tasks are saved to MongoDB and are only available to their owner.
 
-### Code Splitting
+The React development server runs on port 3000, and the Express API runs on
+port 5000. The React development server proxies `/api` requests to Express.
+If you change `API_PORT`, also update the `proxy` value in `package.json`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
