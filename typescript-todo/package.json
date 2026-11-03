@@ -1,0 +1,17 @@
+{
+  "name": "typescript-todo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TypeScript version of the to-do app with call/apply/bind examples",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "demo:functions": "tsc && node dist/functionDemo.js",
+    "demo:offline": "tsc && node dist/offlineDemo.js",
+    "demo:api": "tsc && node dist/apiDemo.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
