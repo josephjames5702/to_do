@@ -1,0 +1,43 @@
+import { StyleSheet } from 'react-native';
+
+export const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: '#f3f4f6' },
+  screen: { flex: 1, width: '100%', maxWidth: 600, alignSelf: 'center', paddingTop: 60, paddingHorizontal: 20 },
+  authWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  // Login / sign-up: narrow phone-width column, underline inputs, slim full-width button.
+  authColumn: { width: '100%', maxWidth: 300 },
+  authTitle: { fontSize: 24, fontWeight: '700', textAlign: 'center', marginBottom: 28 },
+  underlineInput: {
+    height: 38,
+    marginBottom: 18,
+    paddingHorizontal: 2,
+    fontSize: 14,
+    borderBottomWidth: 1.5,
+    borderBottomColor: '#9ca3af',
+  },
+  authButton: {
+    height: 38,
+    marginTop: 10,
+    marginBottom: 28,
+    borderRadius: 2,
+    backgroundColor: '#2563eb',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  authLink: { fontSize: 12, color: '#374151', textAlign: 'center' },
+  authLinkBold: { fontWeight: '700', color: '#1d4ed8' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  title: { fontSize: 28, fontWeight: '700', marginBottom: 16 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
+  input: { flex: 1, backgroundColor: '#fff', borderWidth: 1, borderColor: '#d1d5db', borderRadius: 8, padding: 10 },
+  button: { backgroundColor: '#2563eb', paddingVertical: 10, paddingHorizontal: 14, borderRadius: 8 },
+  danger: { backgroundColor: '#dc2626' },
+  buttonText: { color: '#fff', fontWeight: '600' },
+  item: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#fff', padding: 12, borderRadius: 8, marginBottom: 8 },
+  itemText: { flex: 1, fontSize: 16 },
+  done: { textDecorationLine: 'line-through', color: '#9ca3af' },
+  error: { color: '#dc2626', marginBottom: 8 },
+  muted: { color: '#6b7280', textAlign: 'center', marginTop: 20 },
+  filterActive: { backgroundColor: '#1d4ed8' },
+  filterIdle: { backgroundColor: '#9ca3af' },
+});
